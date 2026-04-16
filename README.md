@@ -1,18 +1,107 @@
-# Backend Programming Template (2025)
+# Gacha API
 
-## Development Setup
+## Deskripsi
 
-1. Fork and clone this repository to your local computer.
-2. Open the project using VS Code.
-3. Install the recommended VS Code extensions: `ESLint` and `Prettier`.
-4. Copy and rename `.env.example` to `.env`. Open `.env` and change the database connection string.
-5. Run `npm install` to install the project dependencies.
-6. Run `npm run dev` to start the dev server.
-7. Test the endpoints in the API client app.
+Project ini adalah API sederhana untuk fitur gacha (random hadiah).
+User bisa melakukan gacha untuk mendapatkan hadiah tertentu dengan jumlah terbatas (quota).
 
-## Add New API Endpoints
+---
 
-1. Create a new database schema in `./src/models`.
-2. Create a new folder in `./src/api/components` (if needed). Remember to separate your codes to repositories, services, controllers, and routes.
-3. Add the new route in `./src/api/routes.js`.
-4. Test your new endpoints in the API client app.
+## Base URL
+
+http://localhost:5000/api
+
+---
+
+## Endpoint
+
+### 1. Gacha
+
+**POST** `/gacha`
+
+Digunakan untuk melakukan gacha.
+
+Request:
+
+```json
+{
+  "userId": "user1"
+}
+```
+
+Response:
+
+```json
+{
+  "message": "Menang!",
+  "prize": "Pulsa Rp50.000"
+}
+```
+
+Atau jika tidak mendapatkan hadiah:
+
+```json
+{
+  "message": "Zonk",
+  "prize": null
+}
+```
+
+---
+
+### 2. History Gacha
+
+**GET** `/gacha/history/:userId`
+
+Digunakan untuk melihat riwayat gacha dari user tertentu.
+
+Contoh:
+
+```
+/gacha/history/user1
+```
+
+---
+
+### 3. List Hadiah
+
+**GET** `/gacha/prizes`
+
+Menampilkan semua hadiah yang tersedia beserta sisa quota.
+
+---
+
+### 4. List Pemenang
+
+**GET** `/gacha/winners`
+
+Menampilkan daftar pemenang dari setiap hadiah.
+Nama user akan disamarkan (contoh: user1 → u\*\*\*1).
+
+---
+
+## Aturan
+
+- Setiap user hanya bisa gacha maksimal 5 kali per hari
+- Setiap hadiah memiliki quota terbatas
+- Jika quota habis, hadiah tidak bisa didapatkan lagi
+- Ada kemungkinan user tidak mendapatkan hadiah (zonk)
+- Nama pemenang ditampilkan dalam bentuk yang disamarkan
+
+---
+
+## Cara Menjalankan
+
+1. Install dependencies:
+
+```
+npm install
+```
+
+2. Jalankan server:
+
+```
+npm run dev
+```
+
+3. Test API menggunakan EchoAPI
